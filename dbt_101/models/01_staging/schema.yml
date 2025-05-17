@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: stg_order_items
+    columns:
+      - name: ORDER_ID
+        description: "Order ID reference"
+        tests:
+          - relationships:
+              to: ref('stg_orders')
+              field: ID
+
+      - name: PRODUCT_ID
+        description: "Product ID reference"
+        tests:
+          - relationships:
+              to: ref('stg_products')
+              field: ID

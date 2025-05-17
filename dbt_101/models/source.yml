@@ -1,0 +1,65 @@
+version: 2
+
+sources:
+  - name: grocery_store
+    database: DBT_DAT  
+    schema: RAW
+    description: "Raw data from the store's CRM system containing data about customers, orders, order items and products."
+    tables:
+      - name: orders
+        description: "Raw data containing details about the store's orders, such as order date, customer_id and status."
+        columns:
+          - name: ID
+            description: "The unique identifier for each order"
+            tests:
+                - relationships:
+                    to: source('grocery_store', 'order_items')
+                    field: ORDER_ID
+          - name: DATE
+            description: "The date the order was placed"
+          
+          - name: CUSTOMER_ID
+            description: "The ID of the customer who placed the oder. Foreign key to CUSTOMERS."
+
+          - name: STATUS
+            description: "The current status of the order. {{ doc('status_block') }}"
+                  
+    
+      - name: customers
+        description: "Raw data containing details about the store's customers, such as name, email and address."
+        columns:
+          - name: ID
+            description: "The unique identifier for each customer"
+          - name: FIRST_NAME
+            description: "The first name of the customer"
+          - name: LAST_NAME
+            description: "The last name of the customer"
+          - name: EMAIL
+            description: "The email address of the customer"
+          - name: GENDER
+            description:  "The gender indicated by the customer."
+          - name: date_of_birth
+            description: "The date of birth of the customer"
+      - name: products
+        description: "Raw data containing details about the store's products, such as name, price and category."
+        columns:
+          - name: ID
+            description: "The unique identifier for each product"
+          - name: NAME
+            description: "The name of the product"
+          - name: PRICE
+            description: "The price of the product"
+          - name: CATEGORY
+            description: "The category of the product"
+      - name: order_items
+        description: "Raw data containing details about the store's order items, such as product_id and quantity."
+        columns:
+          - name: ORDER_ITEM_ID
+            description: "The ID of the item within the current order."
+          - name: ORDER_ID
+            description: "The ID of the order this item belongs to. Foreign key to ORDERS."
+          - name: PRODUCT_ID
+            description: "The ID of the product. Foreign key to PRODUCTS."
+          - name: QUANTITY
+            description: "The quantity of the product in this order item"
+
