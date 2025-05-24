@@ -1,15 +1,20 @@
-
-SELECT c.id as CUSTOMER_ID,
-        concat(c.FIRST_NAME, ' ', c.LAST_NAME) AS CUSTOMER_NAME,
-        COUNT(o.id) AS NUMBER_OF_ORDERS,
-        COUNT(o.id) * SUM(oi.QUANTITY) AS TOTAL_AMOUNT_SPENT_USD,
-        SUM(oi.QUANTITY * p.PRICE) AS TOTAL_SPENT,
-        min(o.DATE) AS FIRST_ORDER_DATE,        
-        max(o.DATE) AS LAST_ORDER_DATE
-FROM   {{ ref('stg_orders') }}  o
-LEFT JOIN  {{ ref('stg_order_items') }} oi ON o.id = oi.order_id
-LEFT JOIN {{ ref('stg_customers') }} c  ON c.ID = o.CUSTOMER_ID
-LEFT JOIN {{ ref('stg_products') }} p ON oi.product_id = p.id
-WHERE oi.order_item_id IS NOT NULL
-        and o.STATUS != 'cancelled'
-GROUP BY c.id, c.FIRST_NAME, c.LAST_NAME
+select
+    c.id as customer_id,
+    concat(c.first_name, ' ', c.last_name) as customer_name,
+    count(o.id) as number_of_orders,
+    sum(oi.quantity * p.price) as total_amount_spent_usd,
+    sum(oi.quantity * p.price) as total_spent,
+    min(o.date) as first_order_date,
+    max(o.date) as last_order_date
+from {{ ref('stg_orders') }} as o
+left join {{ ref('stg_order_items') }} as oi
+    on o.id = oi.order_id
+left join {{ ref('stg_customers') }} as c
+    on o.customer_id = c.id
+left join {{ ref('stg_products') }} as p
+    on oi.product_id = p.id
+where
+    oi.order_item_id is not null
+    and o.status != 'cancelled'
+group by
+    1, 2

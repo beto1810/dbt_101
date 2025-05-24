@@ -1,8 +1,14 @@
-
-SELECT
-    CUSTOMER_ID,
-    NUMBER_OF_ORDERS,
-    TOTAL_AMOUNT_SPENT_USD,
-    {{ get_discount_eligibility('NUMBER_OF_ORDERS', 'TOTAL_AMOUNT_SPENT_USD') }} AS IS_ELIGIBLE_FOR_DISCOUNT,
-    {{ calculate_discount('IS_ELIGIBLE_FOR_DISCOUNT', 'NUMBER_OF_ORDERS', 'TOTAL_AMOUNT_SPENT_USD') }} AS DISCOUNT_USD
-FROM  {{ ref('int_customers_orders_joined') }}
+select
+    customer_id,
+    number_of_orders,
+    total_amount_spent_usd,
+    {{ get_discount_eligibility(
+        'number_of_orders',
+        'total_amount_spent_usd'
+    ) }} as is_eligible_for_discount,
+    {{ calculate_discount(
+        'is_eligible_for_discount',
+        'number_of_orders',
+        'total_amount_spent_usd'
+    ) }} as discount_usd
+from {{ ref('int_customers_orders_joined') }}
