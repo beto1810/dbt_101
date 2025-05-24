@@ -36,7 +36,7 @@ jobs:
           dbt deps
 
       - name: Lint SQL files
-        run: sqlfluff lint .
+        run: sqlfluff lint . --dialect snowflake
 
       - name: Run dbt build
         run: dbt build --target ci
