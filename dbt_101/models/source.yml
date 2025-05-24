@@ -9,57 +9,78 @@ sources:
       - name: orders
         description: "Raw data containing details about the store's orders, such as order date, customer_id and status."
         columns:
-          - name: ID
+          - name: id
             description: "The unique identifier for each order"
             tests:
-                - relationships:
-                    to: source('grocery_store', 'order_items')
-                    field: ORDER_ID
-          - name: DATE
+              - unique
+              - not_null
+              #- relationships:
+               #   to: source('grocery_store', 'order_items')
+                #  field: order_id
+          - name: date
             description: "The date the order was placed"
-          
-          - name: CUSTOMER_ID
-            description: "The ID of the customer who placed the oder. Foreign key to CUSTOMERS."
-
-          - name: STATUS
+          - name: customer_id
+            description: "The ID of the customer who placed the order. Foreign key to customers."
+            tests:
+              - relationships:
+                  to: source('grocery_store', 'customers')
+                  field: id
+          - name: status
             description: "The current status of the order. {{ doc('status_block') }}"
-                  
-    
+
       - name: customers
         description: "Raw data containing details about the store's customers, such as name, email and address."
         columns:
-          - name: ID
+          - name: id
             description: "The unique identifier for each customer"
-          - name: FIRST_NAME
+            tests:
+              - unique
+              - not_null
+          - name: first_name
             description: "The first name of the customer"
-          - name: LAST_NAME
+          - name: last_name
             description: "The last name of the customer"
-          - name: EMAIL
+          - name: email
             description: "The email address of the customer"
-          - name: GENDER
-            description:  "The gender indicated by the customer."
+          - name: gender
+            description: "The gender indicated by the customer"
           - name: date_of_birth
             description: "The date of birth of the customer"
+
       - name: products
         description: "Raw data containing details about the store's products, such as name, price and category."
         columns:
-          - name: ID
+          - name: id
             description: "The unique identifier for each product"
-          - name: NAME
+            tests:
+              - unique
+              - not_null
+          - name: name
             description: "The name of the product"
-          - name: PRICE
+          - name: price
             description: "The price of the product"
-          - name: CATEGORY
+          - name: category
             description: "The category of the product"
+
       - name: order_items
         description: "Raw data containing details about the store's order items, such as product_id and quantity."
         columns:
-          - name: ORDER_ITEM_ID
+          - name: order_item_id
             description: "The ID of the item within the current order."
-          - name: ORDER_ID
-            description: "The ID of the order this item belongs to. Foreign key to ORDERS."
-          - name: PRODUCT_ID
-            description: "The ID of the product. Foreign key to PRODUCTS."
-          - name: QUANTITY
+            
+          - name: order_id
+            description: "The ID of the order this item belongs to. Foreign key to orders."
+            tests:
+              - not_null
+              - relationships:
+                  to: source('grocery_store', 'orders')
+                  field: id
+          - name: product_id
+            description: "The ID of the product. Foreign key to products."
+            tests:
+              - not_null
+              - relationships:
+                  to: source('grocery_store', 'products')
+                  field: id
+          - name: quantity
             description: "The quantity of the product in this order item"
-

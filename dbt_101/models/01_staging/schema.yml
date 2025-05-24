@@ -3,16 +3,16 @@ version: 2
 models:
   - name: stg_order_items
     columns:
-      - name: ORDER_ID
+      - name: order_id
         description: "Order ID reference"
         tests:
           - relationships:
               to: ref('stg_orders')
-              field: ID
+              field: order_id
 
-      - name: PRODUCT_ID
+      - name: product_id
         description: "Product ID reference"
         tests:
           - relationships:
               to: ref('stg_products')
-              field: ID
+              field: product_id
