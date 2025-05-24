@@ -15,6 +15,7 @@ jobs:
       
       - name: Install dbt
         run: |
+          cd dbt_101
           pip install -r dbt_101/requirements.txt
           dbt deps
       
