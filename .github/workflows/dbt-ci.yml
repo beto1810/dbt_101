@@ -33,6 +33,7 @@ jobs:
       - name: Install dbt & sqlfluff
         run: |
           pip install dbt-core dbt-snowflake sqlfluff
+          pip install sqlfluff-templater-dbt 
           dbt deps
 
       - name: Lint SQL files
