@@ -20,3 +20,4 @@ jobs:
       
       - name: Deploy dbt models
         run: dbt build --target prod
+        working-directory: ./dbt_101
