@@ -1,5 +1,5 @@
 select
-    c.customer_id as customer_id,
+    c.customer_id ,
     concat(c.customer_first_name, ' ', c.customer_last_name) as customer_name,
     count(o.order_id) as number_of_orders,
     sum(oi.quantity * p.product_price) as total_amount_spent_usd,
