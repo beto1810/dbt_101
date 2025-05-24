@@ -15,7 +15,7 @@ jobs:
       
       - name: Install dbt
         run: |
-          pip install -r requirements.txt
+          pip install -r dbt_101/requirements.txt
           dbt deps
       
       - name: Deploy dbt models
