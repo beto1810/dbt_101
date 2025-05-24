@@ -1,0 +1,4 @@
+sqlfluff
+dbt-core
+dbt-snowflake
+python-dotenv 
