@@ -17,6 +17,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           dbt deps
+        working-directory: ./dbt_101
       
       - name: Deploy dbt models
         run: dbt build --target prod
