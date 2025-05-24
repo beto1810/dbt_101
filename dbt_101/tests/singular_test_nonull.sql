@@ -1,12 +1,18 @@
-WITH SOURCE_DATA AS (
-    SELECT
-        *,
-        order_id || ORDER_ITEM_ID AS PK -- concatenation that is unique across records and produces no nulls
-    FROM {{ ref('stg_order_items') }}
+with source_data as (
+    select
+        order_id,
+        order_item_id,
+        quantity,
+        product_id,
+        concat(order_id, order_item_id) as composite_key
+    from {{ ref('stg_order_items') }}
 )
 
-SELECT
-    PK,
-    *
-FROM SOURCE_DATA
-WHERE PK IS NULL -- should return no rows, causing the test to pass- should return no rows, causing the test to pass
+select
+    composite_key,
+    order_id,
+    order_item_id,
+    quantity,
+    product_id
+from source_data
+where composite_key is null  -- should return no rows if test passes

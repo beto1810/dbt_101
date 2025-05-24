@@ -1,13 +1,13 @@
-WITH SOURCE_DATA AS (
-    SELECT
+with source_data as (
+    select
         *,
-        order_id || ORDER_ITEM_ID AS PK -- concatenation that is unique across records and produces no nulls
-    FROM {{ ref('stg_order_items') }}
+        concat(order_id, order_item_id) as composite_key  -- unique identifier across records
+    from {{ ref('stg_order_items') }}
 )
 
-SELECT
-    PK,
-    COUNT(*) -- values greater than 1 would mean there are duplicate PKs
-FROM SOURCE_DATA
-GROUP BY 1
-HAVING COUNT(*) > 1 -- should return no rows, causing the test to pass
+select
+    composite_key,
+    count(*) as record_count  -- count of duplicate records
+from source_data
+group by 1
+having count(*) > 1  -- should return no rows if test passes
